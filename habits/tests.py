@@ -2,14 +2,14 @@ from django.test import TestCase
 from rest_framework import status
 from habits.models import Habit
 from users.models import User
+from rest_framework.test import APIClient
+from django.urls import reverse
 
 
 class HabitsTestCase(TestCase):
+
     def setUp(self):
-        """
-        Первичные тестовые данные
-        """
-        self.user = User.objects.create_user(
+        self.user = User.objects.create(
             email='test@hell.aid',
             first_name='Mihalych',
             is_superuser=False,
@@ -19,6 +19,7 @@ class HabitsTestCase(TestCase):
         self.user.set_password('666')
         self.user.save()
 
+        self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
     def test_habit_create(self):
@@ -38,10 +39,11 @@ class HabitsTestCase(TestCase):
         }
 
         response = self.client.post(
-            'habits: habit_create',
+            reverse('habits:habit_create'),
             kwargs={'pk': self.user.pk},
             data=data
         )
+        print(response.json())
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Habit.objects.all().exists())
@@ -74,16 +76,16 @@ class HabitsTestCase(TestCase):
             'owner': self.user.pk
         }
         self.client.post(
-            'habit: habit_create',
+            reverse('habits:habit_create'),
             kwargs={'pk': self.user.pk},
             data=data_a
         )
         self.client.post(
-            'habit: habit_create',
+            reverse('habits:habit_create'),
             kwargs={'pk': self.user.pk},
             data=data_b
         )
-        response = self.client.get('habits: public_habits_list')
+        response = self.client.get(reverse('habits:public_habits_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_validate_duration_create_habit(self):
@@ -94,14 +96,14 @@ class HabitsTestCase(TestCase):
             "action": "Пробежать 5 км",
             "is_pleasant": False,
             "frequency": "Sunday",
-            "award": "Попить виски с колой",
+            "tribute": "Попить виски с колой",
             "duration": 2000,
             "is_public": True,
             "owner": self.user.pk
         }
 
         response = self.client.post(
-            "habits: habit_create",
+            reverse("habits:habit_create"),
             kwargs={'pk': self.user.pk},
             data=data
         )
@@ -115,14 +117,14 @@ class HabitsTestCase(TestCase):
             "action": "Расслабиться под звуки природы",
             "is_pleasant": True,
             "frequency": "Monday",
-            "award": "Съесть сладкий рулет",
+            "tribute": "Съесть сладкий рулет",
             "duration": 120,
             "is_public": False,
             "owner": self.user.pk
         }
 
         response = self.client.post(
-            "habits: habit_create",
+            reverse("habits:habit_create"),
             kwargs={'pk': self.user.pk},
             data=data
         )
@@ -142,7 +144,7 @@ class HabitsTestCase(TestCase):
         }
 
         response = self.client.post(
-            "habits: habit_create",
+            reverse("habits:habit_create"),
             kwargs={'pk': self.user.pk},
             data=data
         )

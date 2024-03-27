@@ -10,14 +10,14 @@ class Habit(models.Model):
     Habit Model
     """
     class HabitFrequency(models.TextChoices):
-        Daily = 'D', 'Daily'
-        monday = 'M', 'Monday'
-        tuesday = 'T', 'Tuesday'
-        wednesday = 'W', 'Wednesday'
-        thursday = 'TH', 'Thursday'
-        friday = 'FR', 'Friday'
-        saturday = 'SAT', 'Saturday'
-        sunday = 'SUN', 'Sunday'
+        Daily = 'Daily', 'D'
+        monday = 'Monday', 'M'
+        tuesday = 'Tuesday', 'T'
+        wednesday = 'Wednesday', 'WE'
+        thursday = 'Thursday', 'TH'
+        friday = 'Friday', 'FR'
+        saturday = 'Saturday', 'SAT'
+        sunday = 'Sunday', 'SUN'
 
     owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
     place = models.CharField(max_length=200, verbose_name='Место привычки')
