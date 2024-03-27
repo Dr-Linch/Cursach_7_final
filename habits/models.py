@@ -1,10 +1,8 @@
 from django.db import models
 from config.settings import AUTH_USER_MODEL
 from django.utils import timezone
-from datetime import time
 
 NULLABLE = {'blank': True, 'null': True}
-
 
 
 class Habit(models.Model):
