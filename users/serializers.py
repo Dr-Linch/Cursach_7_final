@@ -5,22 +5,22 @@ from users.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email']
-
+        # fields = ['email']
+        fields = '__all__'
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    repeat_password = serializers.CharField()
+    repeat_password = serializers.CharField(max_length=100)
 
     class Meta:
         model = User
         fields = ['email', 'password', 'repeat_password', 'tg_username']
 
-    def save(self, request):
-        user = User(
-            email=self.validated_data['email'],
-            first_name=self.validated_data['email'],
-            last_name=self.validated_data['email'],
-            tg_user_name=self.validated_data['tg_user_name'],
+    def create(self, validated_data):
+        user = User.objects.create(
+            email=validated_data['email'],
+            first_name=validated_data['email'],
+            last_name=validated_data['email'],
+            tg_username=validated_data['tg_username'],
             is_superuser=False,
             is_staff=False,
             is_active=True
