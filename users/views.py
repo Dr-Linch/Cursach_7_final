@@ -18,11 +18,6 @@ class UserDetailAPIView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class UserCreateAPIView(generics.CreateAPIView):
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
-
-
 class UserUpdateAPIView(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
