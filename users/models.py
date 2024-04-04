@@ -8,7 +8,7 @@ class User(AbstractUser):
     username = None
 
     email = models.EmailField(unique=True, verbose_name='Электронная почта')
-    chat_id = models.IntegerField(unique=True, verbose_name='Идентификатор чата', **NULLABLE)
+    chat_id = models.BigIntegerField(unique=True, verbose_name='Идентификатор чата', **NULLABLE)
     tg_username = models.CharField(max_length=150, unique=True, verbose_name='Имя пользователя в Telegram')
 
     USERNAME_FIELD = 'email'
